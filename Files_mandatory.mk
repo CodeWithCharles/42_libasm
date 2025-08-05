@@ -1,2 +1,2 @@
 MANDATORY_SRCS	=															\
-	ft_strlen																\
+	ft_strcpy ft_strlen														\
