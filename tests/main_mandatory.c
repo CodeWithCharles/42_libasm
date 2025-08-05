@@ -6,7 +6,7 @@
 /*   By: cpoulain <cpoulain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 13:50:21 by cpoulain          #+#    #+#             */
-/*   Updated: 2025/08/05 15:55:03 by cpoulain         ###   ########.fr       */
+/*   Updated: 2025/08/05 18:18:28 by cpoulain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,18 @@
 static void	print_res_msg(const char *fncName, int ret);
 static int test_ft_strlen(void);
 static int test_ft_strcpy(void);
+static int test_ft_strcmp(void);
 
 int main(void)
 {
-	int	results[2] = {0};
-	char	*fncNames[2] = {"ft_strlen", "ft_strcpy"};
+	int	results[3] = {0};
+	char	*fncNames[3] = {"ft_strlen", "ft_strcpy", "ft_strcmp"};
 
 	printf("---- LIBASM TESTER ----\n\n");
 
 	results[0] = test_ft_strlen();
 	results[1] = test_ft_strcpy();
+	results[2] = test_ft_strcmp();
 
 	printf("\t---- SUMMARY ----\n\n");
 
@@ -96,6 +98,56 @@ static int test_ft_strcpy(void)
 		printf("\tExpected: \"%s\"\n\tGot: \"%s\"\n\n",
 			expected, dest);
 		if (strcmp(dest, expected) != 0)
+			ret++;
+	}
+
+	if (ret)
+		printf("❌ %d/%d test failed\n\n", ret, i);
+	else
+		printf("✅ All tests passed!\n\n");
+
+	return ret;
+}
+
+static int test_ft_strcmp(void)
+{
+	int	ret = 0;
+	int	i;
+
+	const char *tests[][2] = {
+		{"", ""},
+		{"a", "a"},
+		{"abc", "abc"},
+		{"abc", "abd"},
+		{"abd", "abc"},
+		{"", "a"},
+		{"a", ""},
+		{"abc", "abcde"},
+		{"abcde", "abc"},
+		{"same prefix", "same prefix but longer"},
+		{"shorter", "short"},
+		{"same\0hidden", "same"},
+		{"diff\0hidden", "diff"},
+		{NULL, NULL}
+	};
+
+	printf("\t---- TEST FT_STRCMP ----\n\n");
+
+	for (i = 0; tests[i][0] != NULL; i++)
+	{
+		int expected = strcmp(tests[i][0], tests[i][1]);
+		int result = ft_strcmp(tests[i][0], tests[i][1]);
+		int same_sign = (expected == 0 && result == 0)
+			|| (expected < 0 && result < 0)
+			|| (expected > 0 && result > 0);
+
+		printf("Test %d: \"%s\" vs \"%s\" | %s\n",
+			i, tests[i][0], tests[i][1],
+			same_sign ? "✅ OK" : "❌ KO");
+
+		printf("\tExpected: %d\n\tGot: %d\n\n", expected, result);
+
+		if (!same_sign)
 			ret++;
 	}
 
