@@ -6,7 +6,7 @@
 /*   By: cpoulain <cpoulain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 13:50:21 by cpoulain          #+#    #+#             */
-/*   Updated: 2025/08/06 18:27:01 by cpoulain         ###   ########.fr       */
+/*   Updated: 2025/08/06 18:58:30 by cpoulain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <stdlib.h>
 
 #include "../include/mandatory.h"
 
@@ -25,11 +26,12 @@ static int test_ft_strcpy(void);
 static int test_ft_strcmp(void);
 static int test_ft_write(void);
 static int test_ft_read(void);
+static int test_ft_strdup(void);
 
 int main(void)
 {
-	int results[5] = {0};
-	char *fncNames[5] = {"ft_strlen", "ft_strcpy", "ft_strcmp", "ft_write", "ft_read"};
+	int results[6] = {0};
+	char *fncNames[6] = {"ft_strlen", "ft_strcpy", "ft_strcmp", "ft_write", "ft_read", "ft_strdup"};
 
 	printf("---- LIBASM TESTER ----\n\n");
 
@@ -38,6 +40,7 @@ int main(void)
 	results[2] = test_ft_strcmp();
 	results[3] = test_ft_write();
 	results[4] = test_ft_read();
+	results[5] = test_ft_strdup();
 
 	printf("\t---- SUMMARY ----\n\n");
 
@@ -325,6 +328,53 @@ static int test_ft_read(void)
 
 	if (ret)
 		printf("❌ %d/%d test failed\n\n", ret, 4);
+	else
+		printf("✅ All tests passed!\n\n");
+
+	return ret;
+}
+
+static int test_ft_strdup(void)
+{
+	int ret = 0;
+	int i;
+	char *dup = NULL;
+	const char *tests[] = {
+		"",
+		"hello",
+		"world",
+		"1234567890",
+		"string with spaces",
+		"special chars: !@#$%^&*()",
+		"a\0hidden",
+		NULL};
+
+	printf("\t---- TEST FT_STRDUP ----\n\n");
+
+	for (i = 0; tests[i] != NULL; i++)
+	{
+		dup = ft_strdup(tests[i]);
+		if (!dup)
+		{
+			printf("Test %d: \"%s\" | ❌ KO (NULL returned)\n\n", i, tests[i]);
+			ret++;
+			continue;
+		}
+		if (strcmp(dup, tests[i]) != 0)
+		{
+			printf("Test %d: \"%s\" | ❌ KO\n", i, tests[i]);
+			printf("\tExpected: \"%s\"\n\tGot: \"%s\"\n\n", tests[i], dup);
+			ret++;
+		}
+		else
+		{
+			printf("Test %d: \"%s\" | ✅ OK\n\n", i, tests[i]);
+		}
+		free(dup);
+	}
+
+	if (ret)
+		printf("❌ %d/%d test failed\n\n", ret, i);
 	else
 		printf("✅ All tests passed!\n\n");
 
