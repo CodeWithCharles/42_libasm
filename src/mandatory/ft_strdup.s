@@ -1,11 +1,14 @@
 bits 64
 
-extern	__errno_location
+extern	malloc
+extern	ft_strcpy
+extern	ft_strlen
+
 section	.text
 
-global	ft_write
+global	ft_strdup
 
-	ft_write:
+	ft_strdup:
 		mov	rax,0x1
 		syscall
 		cmp	rax,0xfffffffffffff000

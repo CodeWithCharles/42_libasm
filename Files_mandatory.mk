@@ -1,2 +1,2 @@
 MANDATORY_SRCS	=															\
-	ft_strcmp ft_strcpy ft_strlen ft_write									\
+	ft_read ft_strcmp ft_strcpy ft_strlen ft_write				\
