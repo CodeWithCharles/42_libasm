@@ -6,10 +6,15 @@
 /*   By: cpoulain <cpoulain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 13:48:59 by cpoulain          #+#    #+#             */
-/*   Updated: 2025/08/05 14:08:30 by cpoulain         ###   ########.fr       */
+/*   Updated: 2025/08/07 17:04:04 by cpoulain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
 #include "mandatory.h"
+
+/* --------------------------------- Helpers -------------------------------- */
+
+char	*ft_strchr(const char *s, int c);
+int		ft_atoi_base(const char *input, const char *base);

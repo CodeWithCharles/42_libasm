@@ -6,7 +6,7 @@ ASCOMPILER	:= nasm
 ASFLAGS		:= -felf64
 
 CCOMPILER	:= cc
-CFLAGS		:= -Wall -Wextra -Werror -Iinclude
+CFLAGS		:= -Wall -Wextra -Werror -g -Iinclude
 
 OBJ_DIR		:= obj
 BUILD_DIR	:= bin
@@ -52,7 +52,7 @@ BONUS_TEST_BIN     := $(BUILD_DIR)/tester_bonus
 #                                    RULES                                     #
 # ---------------------------------------------------------------------------- #
 
-.PHONY: all clean fclean re bonus test test_mandatory test_bonus run_mandatory run_bonus
+.PHONY: all clean fclean re bonus test test_mandatory test_bonus run_mandatory run_bonus debug_test_bonus
 
 all: $(MANDATORY_LIB)
 
@@ -100,6 +100,9 @@ test_mandatory: $(MANDATORY_TEST_BIN)
 
 test_bonus: $(BONUS_TEST_BIN)
 	./$(BONUS_TEST_BIN)
+
+debug_test_bonus:	$(BONUS_TEST_BIN)
+	gdb --tui ./$(BONUS_TEST_BIN)
 
 # Convenience aliases
 run_mandatory: test_mandatory
