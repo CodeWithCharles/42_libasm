@@ -2,10 +2,10 @@ bits 64
 
 extern	ft_list_new
 
-struct t_list
+struc t_list
 	pdata:	resq 1
 	pnext:	resq 1
-endstruct
+endstruc
 
 section	.text
 

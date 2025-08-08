@@ -6,7 +6,7 @@
 /*   By: cpoulain <cpoulain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 13:50:21 by cpoulain          #+#    #+#             */
-/*   Updated: 2025/08/08 14:06:15 by cpoulain         ###   ########.fr       */
+/*   Updated: 2025/08/08 17:13:00 by cpoulain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,19 @@
 
 static void	print_res_msg(const char *fncName, int ret);
 static int	test_ft_atoi_base(void);
+static int test_ft_list_new_and_push_front(void);
+static int test_ft_list_size(void);
 
 int main(void)
 {
-	int	results[1] = {0};
-	char	*fncNames[1] = {"ft_atoi_base"};
+	int	results[3] = {0};
+	char	*fncNames[3] = {"ft_atoi_base", "ft_list_push_front", "ft_list_size"};
 
 	printf("---- LIBASM BONUS TESTER ----\n\n");
 
 	results[0] = test_ft_atoi_base();
+	results[1] = test_ft_list_new_and_push_front();
+	results[2] = test_ft_list_size();
 
 	printf("\t---- SUMMARY ----\n\n");
 
@@ -34,6 +38,110 @@ int main(void)
 		print_res_msg(fncNames[i], results[i]);
 
 	return 0;
+}
+
+static int test_ft_list_size(void)
+{
+	int ret = 0;
+
+	printf("\t---- TEST FT_LIST_SIZE ----\n\n");
+
+	t_list *head = NULL;
+
+	// Test 0: empty list
+	int size = ft_list_size(head);
+	if (size != 0)
+	{
+		printf("❌ Test 0: Expected 0, got %d\n\n", size);
+		ret++;
+	}
+	else
+	{
+		printf("✅ Test 0: Empty list size = 0\n\n");
+	}
+
+	// Prepare some values
+	char vals[] = {'A', 'B', 'C'};
+
+	// Add 1 node
+	ft_list_push_front(&head, &vals[0]); // List: A
+	size = ft_list_size(head);
+	if (size != 1)
+	{
+		printf("❌ Test 1: Expected 1, got %d\n", size);
+		ret++;
+	}
+	else
+	{
+		printf("✅ Test 1: List size = 1\n");
+	}
+
+	// Add 2 more nodes
+	ft_list_push_front(&head, &vals[1]); // List: B -> A
+	ft_list_push_front(&head, &vals[2]); // List: C -> B -> A
+
+	size = ft_list_size(head);
+	if (size != 3)
+	{
+		printf("❌ Test 2: Expected 3, got %d\n", size);
+		ret++;
+	}
+	else
+	{
+		printf("✅ Test 2: List size = 3\n");
+	}
+
+	printf("\n");
+	return ret;
+}
+
+static int test_ft_list_new_and_push_front(void)
+{
+	int ret = 0;
+
+	printf("\t---- TEST FT_LIST_NEW + FT_LIST_PUSH_FRONT ----\n\n");
+
+	t_list *head = NULL;
+	char	*vals = "Coucou";
+
+	// First test: create new node
+	t_list *node = ft_list_new(&vals[0]);
+	if (!node || node->data != &vals[0] || node->next != NULL)
+	{
+		printf("ft_list_new failed ❌\n\n");
+		ret++;
+	}
+	else
+	{
+		printf("ft_list_new passed ✅\n\n");
+	}
+
+	// Push front several values
+	ft_list_push_front(&head, &vals[0]); // 1
+	ft_list_push_front(&head, &vals[1]); // 2 -> 1
+	ft_list_push_front(&head, &vals[2]); // 3 -> 2 -> 1
+
+	// Now check list order and content
+	t_list *current = head;
+	int i = 2;
+	while (current)
+	{
+		if (current->data != &vals[i])
+		{
+			printf("❌ Node %d has wrong value. Expected %d, got %d\n",
+					2 - i, vals[i], *(int *)current->data);
+			ret++;
+		}
+		else
+		{
+			printf("✅ Node %d is correct: %d\n", 2 - i, *(int *)current->data);
+		}
+		current = current->next;
+		i--;
+	}
+
+	printf("\n");
+	return ret;
 }
 
 static int test_ft_atoi_base(void)

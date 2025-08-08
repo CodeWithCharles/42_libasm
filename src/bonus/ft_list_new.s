@@ -2,10 +2,10 @@ bits 64
 
 extern malloc
 
-struct t_list
+struc t_list
 	pdata:	resq 1
 	pnext:	resq 1
-endstruct
+endstruc
 
 section	.text
 
@@ -24,6 +24,6 @@ ft_list_new:
 	MOV		QWORD	[rax+pdata], rdi
 	MOV		QWORD	[rax+pnext], 0x0
 
-.exit
+.exit:
 	LEAVE
 	RET
