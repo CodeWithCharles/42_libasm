@@ -6,7 +6,7 @@
 /*   By: cpoulain <cpoulain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 13:50:21 by cpoulain          #+#    #+#             */
-/*   Updated: 2025/08/08 17:13:00 by cpoulain         ###   ########.fr       */
+/*   Updated: 2025/08/08 18:05:38 by cpoulain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,19 @@ static void	print_res_msg(const char *fncName, int ret);
 static int	test_ft_atoi_base(void);
 static int test_ft_list_new_and_push_front(void);
 static int test_ft_list_size(void);
+static int test_ft_list_sort(void);
 
 int main(void)
 {
-	int	results[3] = {0};
-	char	*fncNames[3] = {"ft_atoi_base", "ft_list_push_front", "ft_list_size"};
+	int	results[4] = {0};
+	char	*fncNames[4] = {"ft_atoi_base", "ft_list_push_front", "ft_list_size", "ft_list_sort"};
 
 	printf("---- LIBASM BONUS TESTER ----\n\n");
 
 	results[0] = test_ft_atoi_base();
 	results[1] = test_ft_list_new_and_push_front();
 	results[2] = test_ft_list_size();
+	results[3] = test_ft_list_sort();
 
 	printf("\t---- SUMMARY ----\n\n");
 
@@ -38,6 +40,76 @@ int main(void)
 		print_res_msg(fncNames[i], results[i]);
 
 	return 0;
+}
+
+static int cmp_int(void *a, void *b)
+{
+	int c = *((int *)a);
+	int d = *((int *)b);
+	return c - d;
+}
+
+static int test_ft_list_sort(void)
+{
+	int ret = 0;
+
+	printf("\t---- TEST FT_LIST_SORT ----\n\n");
+
+	int vals[] = {10, 42, -1, 23, -16};
+	const int num_vals = sizeof(vals) / sizeof(vals[0]);
+
+	// Build unsorted list
+	t_list *head = NULL;
+	for (int i = 0; i < num_vals; i++)
+		ft_list_push_front(&head, &vals[i]);
+
+	printf("List before sorting:\n");
+	t_list *tmp = head;
+	while (tmp)
+	{
+		printf("  - %d\n", *((int *)tmp->data));
+		tmp = tmp->next;
+	}
+
+	// Sort list
+	ft_list_sort(&head, cmp_int);
+
+	// Expected sorted values
+	int expected[] = {-16, -1, 10, 23, 42};
+
+	printf("\nList after sorting:\n");
+	tmp = head;
+	for (int i = 0; i < num_vals; i++)
+	{
+		if (!tmp)
+		{
+			printf("❌ List ended prematurely at index %d\n", i);
+			ret++;
+			break;
+		}
+
+		int actual = *((int *)tmp->data);
+		printf("  - %d\n", actual);
+		if (actual != expected[i])
+		{
+			printf("❌ Node %d mismatch: expected %d, got %d\n", i, expected[i], actual);
+			ret++;
+		}
+		tmp = tmp->next;
+	}
+	if (tmp) // Too many nodes
+	{
+		printf("❌ List longer than expected\n");
+		ret++;
+	}
+
+	if (ret == 0)
+		printf("\n✅ ft_list_sort passed all tests!\n");
+	else
+		printf("\n❌ ft_list_sort failed %d test(s)\n", ret);
+
+	printf("\n");
+	return ret;
 }
 
 static int test_ft_list_size(void)
@@ -94,6 +166,7 @@ static int test_ft_list_size(void)
 	printf("\n");
 	return ret;
 }
+
 
 static int test_ft_list_new_and_push_front(void)
 {
