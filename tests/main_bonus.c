@@ -6,7 +6,7 @@
 /*   By: cpoulain <cpoulain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 13:50:21 by cpoulain          #+#    #+#             */
-/*   Updated: 2025/08/07 18:11:33 by cpoulain         ###   ########.fr       */
+/*   Updated: 2025/08/08 14:06:15 by cpoulain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,12 @@ static int test_ft_atoi_base(void)
 		// Empty string
 		{"", "0123456789", 0},
 
+		// Zero
+		{"0", "0123456789", 0},
+
+		// Only sign
+		{"+", "0123456789", 0},
+
 		// Base too short (should fail)
 		{"123", "0", 0},
 
@@ -93,6 +99,10 @@ static int test_ft_atoi_base(void)
 
 		// String with no valid digits at all
 		{"ZZZ", "0123456789ABCDEF", 0},
+
+		// Multiple signs
+		{"--+--123", "0123456789", 123},
+		{" +--+-+42", "0123456789", -42},
 
 		// NULL strings (should safely return 0)
 		{NULL, "0123456789", 0},
