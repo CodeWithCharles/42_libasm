@@ -6,13 +6,14 @@
 /*   By: cpoulain <cpoulain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 13:48:59 by cpoulain          #+#    #+#             */
-/*   Updated: 2025/08/06 18:57:14 by cpoulain         ###   ########.fr       */
+/*   Updated: 2025/08/11 15:39:35 by cpoulain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
 #include <stddef.h>
+#include <sys/types.h>
 
 size_t	ft_strlen(const char *s);
 char	*ft_strcpy(char *dest, const char *src);
